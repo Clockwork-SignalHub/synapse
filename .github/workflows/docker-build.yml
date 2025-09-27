@@ -46,8 +46,8 @@ jobs:
           build-args: |
             SYNAPSE_SITE_PACKAGES=${{ env.SITE_PACKAGES }}
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+ 	    ghcr.io/${{ github.repository && github.repository.toLowerCase() }}:latest
+  	    ghcr.io/${{ github.repository && github.repository.toLowerCase() }}:${{ github.sha }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
