@@ -21,6 +21,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check GHCR_PAT presence
+        run: |
+          if [ -z "${{ secrets.GHCR_PAT }}" ]; then
+            echo "GHCR_PAT is not set!"
+            exit 1
+          else
+            echo "GHCR_PAT is set."
+          fi
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
