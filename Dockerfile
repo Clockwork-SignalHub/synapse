@@ -1,11 +1,34 @@
-# Dockerfile — Synapse fork with build-arg for site-packages path
-FROM matrixdotorg/synapse:latest
+# Option B: Full rebuild with Rust support
+FROM python:3.11-slim
 
-# Build-time argument for site-packages path
-ARG SYNAPSE_SITE_PACKAGES=/usr/local/lib/python3.11/site-packages
+# Install build tools and dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libffi-dev \
+    libpq-dev \
+    curl \
+    git \
+    python3-dev \
+    cargo \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy your fork's synapse code into the container
-COPY synapse ${SYNAPSE_SITE_PACKAGES}/synapse
+# Create synapse user
+RUN useradd -m synapse
 
-CMD ["run"]
+WORKDIR /home/synapse
 
+# Copy the Synapse fork source code
+COPY . .
+
+# Upgrade pip/setuptools/wheel
+RUN pip install --upgrade pip setuptools wheel maturin
+
+# Install Synapse fork (will compile Rust extensions)
+RUN pip install --no-cache-dir .
+
+# Expose Synapse port
+EXPOSE 8008
+
+# Set default command
+ENTRYPOINT ["python", "-m", "synapse.app.homeserver"]
+CMD ["--config-path", "/data/homeserver.yaml"]
