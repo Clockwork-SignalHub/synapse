@@ -12,6 +12,9 @@ permissions:
   contents: read
   packages: write
 
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -57,8 +60,8 @@ jobs:
         uses: docker/metadata-action@master
         with:
           images: |
-            docker.io/matrixdotorg/synapse
-            ghcr.io/matrix-org/synapse
+            docker.io/${{ env.DOCKERHUB_USERNAME }}/synapse-fork
+            ghcr.io/clockwork-signalhub/synapse
           flavor: |
             latest=false
           tags: |
