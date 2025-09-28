@@ -10,7 +10,7 @@ on:
       # stable docs
       - master
 
-  workflow_dispatch: false
+  workflow_dispatch: []
 
 jobs:
   pre:
