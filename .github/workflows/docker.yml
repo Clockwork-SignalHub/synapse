@@ -57,8 +57,8 @@ jobs:
         uses: docker/metadata-action@master
         with:
           images: |
-            docker.io/matrixdotorg/synapse
-            ghcr.io/matrix-org/synapse
+#            docker.io/matrixdotorg/synapse
+            ghcr.io/${{ github.repository }}
           flavor: |
             latest=false
           tags: |
