@@ -85,3 +85,5 @@ jobs:
           # https://github.com/rust-lang/cargo/issues/10583
           build-args: |
             CARGO_NET_GIT_FETCH_WITH_CLI=true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
