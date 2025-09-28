@@ -67,6 +67,14 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=pep440,pattern={{raw}}
 
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
       - name: Build and push all platforms
         uses: docker/build-push-action@v5
         with:
@@ -77,8 +85,10 @@ jobs:
           tags: "${{ steps.set-tag.outputs.tags }}"
           file: "docker/Dockerfile"
           platforms: linux/amd64,linux/arm64
-
-          # arm64 builds OOM without the git fetch setting. c.f.
-          # https://github.com/rust-lang/cargo/issues/10583
           build-args: |
             CARGO_NET_GIT_FETCH_WITH_CLI=true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Save Docker cache
+        run: mv /tmp/.buildx-cache-new /tmp/.buildx-cache
