@@ -56,9 +56,8 @@ jobs:
         id: set-tag
         uses: docker/metadata-action@master
         with:
-          images: |
-#            docker.io/matrixdotorg/synapse
-            ghcr.io/${{ github.repository }}
+	  # images: docker.io/matrixdotorg/synapse
+          images: ghcr.io/${{ github.repository }}	  
           flavor: |
             latest=false
           tags: |
