@@ -33,7 +33,7 @@ Always work on a branch to keep changes isolated:
 ```bash
 git checkout -b feature/my-change
 ```
-Name your branch clearly to reflect your change (e.g., feature/add-authentication, feature/ai-integration).
+###### Name your branch clearly to reflect your change (e.g., feature/add-authentication, feature/ai-integration).
 2. Make changes
 Edit the code in this fork to implement your feature or fix.
 Keep commits clean and focused.
